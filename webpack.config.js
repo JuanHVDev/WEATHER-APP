@@ -46,7 +46,7 @@ module.exports = {
       ignoreOrder: false,
     }),
     new CopyPlugin({
-      patterns: [{ from: 'src/assets', to: 'assets/' }],
+      patterns: [{ from: 'src/assets/**/*', to: 'assets/', noErrorOnMissing: true }],
     }),
   ],
 };
