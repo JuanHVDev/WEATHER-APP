@@ -9,6 +9,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Fraunces', serif;
+  font-size: 18px;
 }
 
 body{
@@ -26,4 +27,47 @@ body{
   text-align: center;
   color: white;
   padding: 20px;
+}
+
+.formulario{
+  height: 250px;
+}
+
+.text-busqueda{
+  font-size: 35px;
+  text-align: center;
+  color: var(--vivid-sky-blue);
+  display: block;
+}
+
+.input-busqueda{
+  width: 250px;
+  height: 40px;
+  border: none;
+  margin: 10px auto;
+  display: block;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.button-buscar{
+  width: 200px;
+  height: 50px;
+  border: none;
+  margin: 10px auto;
+  display: block;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  background-color: var(--trypan-blue);
+  color: white;
+  text-transform: uppercase;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 3px;
 }
