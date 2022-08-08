@@ -1,20 +1,20 @@
-const CopyPlugin = require("copy-webpack-plugin");
-const HtmlWebPack = require("html-webpack-plugin");
-const MiniCssExtract = require("mini-css-extract-plugin");
-const CssMinimizer = require("css-minimizer-webpack-plugin");
-const Terser = require("terser-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebPack = require('html-webpack-plugin');
+const MiniCssExtract = require('mini-css-extract-plugin');
+const CssMinimizer = require('css-minimizer-webpack-plugin');
+const Terser = require('terser-webpack-plugin');
 
 module.exports = {
-    mode: "production",
+    mode: 'production',
     output: {
         clean: true,
-        filename: "main.[contenthash].js",
+        filename: 'main.[contenthash].js',
     },
     module: {
         rules: [
             {
                 test: /\.html$/,
-                loader: "html-loader",
+                loader: 'html-loader',
                 options: {
                     sources: false,
                 },
@@ -22,24 +22,24 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: /styles.css$/,
-                use: ["style-loader", "css-loader"],
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: /styles.css$/,
-                use: [MiniCssExtract.loader, "css-loader"],
+                use: [MiniCssExtract.loader, 'css-loader'],
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
 
-                loader: "file-loader",
+                loader: 'file-loader',
             },
             {
                 test: /\.m?js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ["@babel/preset-env"],
+                        presets: ['@babel/preset-env'],
                     },
                 },
             },
@@ -53,16 +53,22 @@ module.exports = {
 
     plugins: [
         new HtmlWebPack({
-            title: "Mi Webpack App",
-            filename: "index.html",
-            template: "./src/index.html",
+            title: 'Mi Webpack App',
+            filename: 'index.html',
+            template: './src/index.html',
         }),
         new MiniCssExtract({
-            filename: "[name].[fullhash].css",
+            filename: '[name].[fullhash].css',
             ignoreOrder: false,
         }),
         new CopyPlugin({
-            patterns: [{ from: "src/assets", to: "assets/" }],
+            patterns: [
+                {
+                    from: 'src/assets/**/*',
+                    to: 'assets/',
+                    noErrorOnMissing: true,
+                },
+            ],
         }),
     ],
 };
