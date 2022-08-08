@@ -17,7 +17,7 @@ window.addEventListener('load', () => {
 
 function buscarClima(e) {
     e.preventDefault();
-    let ciudad = document.querySelector('.input-busqueda').value;
+    const ciudad = document.querySelector('.input-busqueda').value;
     if (ciudad === '') {
         Swal.fire({
             icon: 'error',
@@ -57,7 +57,9 @@ function mostrarClima(data) {
     const {
         name,
         main: { temp, temp_max: tempMax, temp_min: tempMin },
+        weather: [{icon}]
     } = data;
+    console.log(icon)
     const resultado = document.querySelector('.resultado');
     const ciudadClima = document.createElement('div');
     ciudadClima.classList.add('card-clima');
@@ -65,12 +67,16 @@ function mostrarClima(data) {
     title.textContent = `Clima en ${name}`;
     title.classList.add('name-ciudad');
     const temperatura = document.createElement('p');
-    temperatura.textContent = `Temperatura: ${temp}℃`;
+    temperatura.textContent = `Temperatura: ${Math.round(temp)}℃`;
     const temperaturaMax = document.createElement('p');
-    temperaturaMax.textContent = `Max: ${tempMax}℃`;
+    temperaturaMax.textContent = `Max: ${Math.round(tempMax)}℃`;
     const temperaturaMin = document.createElement('p');
-    temperaturaMin.textContent = `Min: ${tempMin}℃`;
+    temperaturaMin.textContent = `Min: ${Math.round(tempMin)}℃`;
+    const icono = document.createElement('img');
+    icono.src = `http://openweathermap.org/img/wn/${icon}@2x.png`
+    icono.classList.add('img-weather')
     ciudadClima.appendChild(title);
+    ciudadClima.appendChild(icono)
     ciudadClima.appendChild(temperatura);
     ciudadClima.appendChild(temperaturaMax);
     ciudadClima.appendChild(temperaturaMin);
