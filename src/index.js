@@ -1,35 +1,93 @@
 import './styles.css';
+import Swal from 'sweetalert2';
 import Title from './components/portada';
 import Formulario from './components/formulario';
-const divPrincipal = document.querySelector('.root')
+import CardClima from './components/Card-clima';
 
-divPrincipal.append(Title(), Formulario())
+const container = document.querySelector('.container');
+container.append(Title(), Formulario(), CardClima());
 
 // fetch(url).then(res=>res.json()).then(({name, main:{temp}, sys:{country}})=>console.log(name, temp, country))
 
-const formulario = document.querySelector('form')
+const formulario = document.querySelector('form');
 
-window.addEventListener('load', ()=>{
-    formulario.addEventListener('submit', buscarClima)
-})
+window.addEventListener('load', () => {
+    formulario.addEventListener('submit', buscarClima);
+});
 
 function buscarClima(e) {
     e.preventDefault();
-    const ciudad = document.querySelector('.input-busqueda').value
-    console.log(ciudad)
-    if(ciudad === ''){
-        alert('Ingresas la ciudad a buscar')
+    let ciudad = document.querySelector('.input-busqueda').value;
+    if (ciudad === '') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Ciudad Erronea',
+            text: 'Los campos deben de estar completos, verifique por favor',
+        });
         return;
     }
-    consultarAPI(ciudad)
+    console.log(ciudad);
+    consultarAPI(ciudad);
+    formulario.reset();
 }
 
-function consultarAPI(ciudad){
-    const API = '8bab29329a4074990e74a49b50f9c57f'
+function consultarAPI(ciudad) {
+    const API = '8bab29329a4074990e74a49b50f9c57f';
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&lang=sp&units=metric&appid=${API}`;
+    Spinner();
     fetch(url)
-    .then(res=>res.json())
-    .then(data=>{
-        console.log(data)
-    })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+            resetearHtml();
+            if (data.cod === '404') {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Ciudad no encontrada',
+                    text: 'La ciudad que busca no se encuentra, verificar su informacion',
+                });
+            } else {
+                mostrarClima(data);
+            }
+        })
+        .catch((err) => console.log(err));
+}
+
+function mostrarClima(data) {
+    const {
+        name,
+        main: { temp, temp_max: tempMax, temp_min: tempMin },
+    } = data;
+    const resultado = document.querySelector('.resultado');
+    const ciudadClima = document.createElement('div');
+    ciudadClima.classList.add('card-clima');
+    const title = document.createElement('p');
+    title.textContent = `Clima en ${name}`;
+    title.classList.add('name-ciudad');
+    const temperatura = document.createElement('p');
+    temperatura.textContent = `Temperatura: ${temp}℃`;
+    const temperaturaMax = document.createElement('p');
+    temperaturaMax.textContent = `Max: ${tempMax}℃`;
+    const temperaturaMin = document.createElement('p');
+    temperaturaMin.textContent = `Min: ${tempMin}℃`;
+    ciudadClima.appendChild(title);
+    ciudadClima.appendChild(temperatura);
+    ciudadClima.appendChild(temperaturaMax);
+    ciudadClima.appendChild(temperaturaMin);
+    resultado.appendChild(ciudadClima);
+}
+
+function resetearHtml() {
+    const resultado = document.querySelector('.resultado');
+    while (resultado.firstChild) {
+        resultado.removeChild(resultado.firstChild);
+    }
+}
+
+function Spinner() {
+    resetearHtml();
+    const resultado = document.querySelector('.resultado');
+    const divSpinner = document.createElement('div');
+    divSpinner.classList.add('spinner');
+    resultado.appendChild(divSpinner);
 }
